@@ -65,7 +65,6 @@ vim.opt.updatetime = 50
 
 -- to disable icons and use a minimalist setup, uncomment the following
 lvim.use_icons = true
-lvim.lsp.automatic_servers_installation = true
 lvim.lsp.installer.setup.automatic_installation = true
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
