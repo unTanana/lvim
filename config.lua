@@ -1,13 +1,5 @@
---[[
-lvim is the global options object
-Linters should be
-filled in as strings with either
-a global executable or a path to
-an executable
-]]
--- low level vim modifications
-
 lvim.builtin.bufferline.active = false
+lvim.builtin.indentlines.active = false
 
 local function get_current_git_directory()
     return vim.fn.system("git rev-parse --show-toplevel"):gsub("%s+", "")
@@ -53,6 +45,7 @@ end
 lvim.log.level = "warn"
 lvim.format_on_save = true
 lvim.colorscheme = "catppuccin-mocha"
+vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.relativenumber = true
@@ -89,13 +82,7 @@ lvim.keys.normal_mode["gs"] = ":Lspsaga signature_help<CR>"
 lvim.keys.normal_mode["[e"] = ":Lspsaga diagnostic_jump_prev<CR>"
 lvim.keys.normal_mode["]e"] = ":Lspsaga diagnostic_jump_next<CR>"
 lvim.keys.normal_mode["<leader>o"] = ":Lspsaga outline<CR>"
-lvim.keys.normal_mode["<leader>z"] = ":ZenMode<CR>"
-lvim.keys.normal_mode["]E"] = function()
-    require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR })
-end
-lvim.keys.normal_mode["[E"] = function()
-    require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.ERROR })
-end
+-- lvim.keys.normal_mode["<leader>z"] = ":ZenMode<CR>"
 
 -- harpoon and buffers
 lvim.keys.normal_mode["<C-1>"] = function() require("harpoon.ui").nav_file(1) end
@@ -104,7 +91,6 @@ lvim.keys.normal_mode["<C-3>"] = function() require("harpoon.ui").nav_file(3) en
 lvim.keys.normal_mode["<C-4>"] = function() require("harpoon.ui").nav_file(4) end
 lvim.keys.normal_mode["<S-l>"] = function() require("harpoon.ui").nav_next() end
 lvim.keys.normal_mode["<S-h>"] = function() require("harpoon.ui").nav_prev() end
-lvim.keys.normal_mode["<C-x>"] = "<cmd>BufferKill<cr>"
 lvim.keys.normal_mode["<C-w>"] = "<C-^>"
 
 -- c* && c#
@@ -417,22 +403,22 @@ lvim.plugins = {
             })
         end,
     },
-    {
-        "folke/zen-mode.nvim",
-        config = function()
-            require("zen-mode").setup {
-                window = {
-                    width = 0.59,
-                },
-                plugin = {
-                    gitsigns = true,
-                    kitty = {
-                        enabled = true
-                    }
-                }
-            }
-        end
-    },
+    -- {
+    --     "folke/zen-mode.nvim",
+    --     config = function()
+    --         require("zen-mode").setup {
+    --             window = {
+    --                 width = 0.59,
+    --             },
+    --             plugin = {
+    --                 gitsigns = true,
+    --                 kitty = {
+    --                     enabled = true
+    --                 }
+    --             }
+    --         }
+    --     end
+    -- },
     {
         "ThePrimeagen/harpoon"
     },
@@ -462,7 +448,7 @@ nvim_lsp.tailwindcss.setup {}
 -- astro file detection
 vim.filetype.add({
     extension = {
-        astro = "astro"
+        astro = "astro",
     }
 })
 
