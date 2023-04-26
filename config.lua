@@ -441,8 +441,13 @@ lvim.plugins = {
 -- make date format for blame relative
 vim.g.gitblame_date_format = '%r'
 
+-- lsp stuff
 local nvim_lsp = require "lspconfig"
+
 nvim_lsp.tailwindcss.setup {}
+nvim_lsp.clangd.setup {
+    filetypes = { "c", "cpp", "objc", "objcpp", "mm" },
+}
 -- require("copilot").setup()
 
 -- astro file detection
