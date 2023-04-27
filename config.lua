@@ -209,7 +209,11 @@ lvim.builtin.telescope.defaults.file_ignore_patterns = { "node_modules", ".git",
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
--- lvim.builtin.terminal.open_mapping = "<C-t>"
+lvim.builtin.terminal.execs = {
+    { nil, "<C-`>",  "Horizontal Terminal", "horizontal", 0.3 },
+    { nil, "<C-\\>", "Vertical Terminal",   "vertical",   0.4 },
+    { nil, "<C-t>",  "Float Terminal",      "float",      nil },
+}
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
