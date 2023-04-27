@@ -209,7 +209,7 @@ lvim.builtin.telescope.defaults.file_ignore_patterns = { "node_modules", ".git",
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
-lvim.builtin.terminal.open_mapping = "<C-t>"
+-- lvim.builtin.terminal.open_mapping = "<C-t>"
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
@@ -444,7 +444,10 @@ vim.g.gitblame_date_format = '%r'
 -- lsp stuff
 local nvim_lsp = require "lspconfig"
 
-nvim_lsp.tailwindcss.setup {}
+nvim_lsp.tailwindcss.setup {
+    filetypes = { "astro", "html", "css", "scss", "javascriptreact", "typescriptreact",
+        "svelte", "vue", "tsx", "jsx", "rescript" }
+}
 nvim_lsp.clangd.setup {
     filetypes = { "c", "cpp", "objc", "objcpp", "mm" },
 }
