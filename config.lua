@@ -1,3 +1,7 @@
+require("user.plugins")
+require("user.dap")
+require("user.harpoon")
+
 lvim.builtin.bufferline.active = false
 lvim.builtin.indentlines.active = false
 
@@ -77,21 +81,13 @@ lvim.keys.normal_mode["<leader>d"] = "\"_d"
 
 -- Lsp Saga
 lvim.keys.normal_mode["K"] = ":Lspsaga hover_doc<CR>"
-lvim.keys.normal_mode["gd"] = ":Lspsaga goto_definition<CR>"
 lvim.keys.normal_mode["gs"] = ":Lspsaga signature_help<CR>"
 lvim.keys.normal_mode["[e"] = ":Lspsaga diagnostic_jump_prev<CR>"
 lvim.keys.normal_mode["]e"] = ":Lspsaga diagnostic_jump_next<CR>"
 lvim.keys.normal_mode["<leader>o"] = ":Lspsaga outline<CR>"
 -- lvim.keys.normal_mode["<leader>z"] = ":ZenMode<CR>"
 
--- harpoon and buffers
-lvim.keys.normal_mode["<C-1>"] = function() require("harpoon.ui").nav_file(1) end
-lvim.keys.normal_mode["<C-2>"] = function() require("harpoon.ui").nav_file(2) end
-lvim.keys.normal_mode["<C-3>"] = function() require("harpoon.ui").nav_file(3) end
-lvim.keys.normal_mode["<C-4>"] = function() require("harpoon.ui").nav_file(4) end
-lvim.keys.normal_mode["<S-l>"] = function() require("harpoon.ui").nav_next() end
-lvim.keys.normal_mode["<S-h>"] = function() require("harpoon.ui").nav_prev() end
-lvim.keys.normal_mode["<C-w>"] = "<C-^>"
+
 
 -- c* && c#
 lvim.keys.normal_mode["c*"] = "*Ncgn"
@@ -140,6 +136,7 @@ lvim.builtin.which_key.mappings["w"] = { require("harpoon.mark").add_file, "Add 
 -- lvim.builtin.which_key.mappings["f"] = { "<cmd>Telescope find_files<CR>", "Find files" }
 lvim.builtin.which_key.mappings["c"] = {
     name = "+Code",
+    b = { "<cmd>DapToggleBreakpoint<CR>", "Toggle Breakpoint" },
     p = { "\"0p", "paste 0" },
     P = { "\"0P", "Paste 0" },
     l = { "@l", "console.log" },
@@ -168,14 +165,6 @@ lvim.builtin.which_key.mappings["C"] = {
 }
 
 lvim.builtin.which_key.mappings["x"] = { "<cmd>BufferKill<cr>", "Close Window" }
--- lvim.builtin.which_key.mappings["w"] = {
---     name = "+Window",
---     d = { "<cmd>BufferLineMoveNext<cr>", "Move Right" },
---     a = { "<cmd>BufferLineMovePrev<cr>", "Move Left" },
---     s = { "<cmd>BufferLineTogglePin<cr>", "Toggle Pin" },
---     w = { ":w<CR>", "Save" },
---     q = { "<cmd>BufferKill<CR>", "Close Window" },
--- }
 
 lvim.builtin.which_key.mappings["s"]["f"] = {
     require("lvim.core.telescope.custom-finders").find_project_files, "Find File"
@@ -197,28 +186,22 @@ lvim.builtin.which_key.mappings["g"] = { "<cmd>LazyGit<cr>", "LazyGit" }
 
 lvim.builtin.telescope.defaults.file_ignore_patterns = { "node_modules", ".git", ".DS_Store" }
 
--- lvim.builtin.which_key.mappings["S"] = {
---     name = "Session",
---     c = { "<cmd>lua require('persistence').load()<cr>", "Restore last session for current dir" },
---     l = { "<cmd>lua require('persistence').load({ last = true })<cr>", "Restore last session" },
---     Q = { "<cmd>lua require('persistence').stop()<cr>", "Quit without saving session" },
--- }
-
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
-lvim.builtin.terminal.execs = {
-    { nil, "<C-`>",  "Horizontal Terminal", "horizontal", 0.3 },
-    { nil, "<C-\\>", "Vertical Terminal",   "vertical",   0.4 },
-    { nil, "<C-t>",  "Float Terminal",      "float",      nil },
-}
+-- lvim.builtin.terminal.execs = {
+--     { nil, "<C-`>",   "Horizontal Terminal", "horizontal", 0.4 },
+--     { nil, "<C-`>",   "Vertical Terminal", "vertical", 0.4 },
+--     { nil, [[<c-\>]], "Float Terminal",    "float",    nil },
+-- }
 
 -- if you don't want all the parsers change this to a table of the ones you want
 lvim.builtin.treesitter.ensure_installed = {
     "bash",
     "c",
+    "cpp",
     "javascript",
     "json",
     "lua",
@@ -253,6 +236,7 @@ formatters.setup {
         ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
         filetypes = { "typescript", "typescriptreact", "javascript" },
     },
+    { command = "rustfmt", filetypes = { "rust" } },
 }
 
 -- -- set additional linters
@@ -269,7 +253,7 @@ linters.setup {
     {
         command = "cspell",
         ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-        filetypes = { "javascript", "python", "typescript", "typescriptreact" },
+        filetypes = { "javascript", "python", "typescript", "typescriptreact", "rust" },
         diagnostics_postprocess = function(diagnostic)
             diagnostic.severity = vim.diagnostic.severity.HINT
         end,
@@ -278,169 +262,6 @@ linters.setup {
 
 
 -- Additional Plugins
-lvim.plugins = {
-    { "catppuccin/nvim",        name = "catppuccin" },
-    { 'stsewd/isort.nvim' },
-    { 'f-person/git-blame.nvim' },
-    {
-        "justinmk/vim-sneak"
-    },
-    {
-        "nvim-treesitter/nvim-treesitter-context"
-    },
-    {
-        "windwp/nvim-ts-autotag",
-        config = function()
-            require("nvim-ts-autotag").setup({
-                enable = true,
-                filetypes = {
-                    'html', 'javascript', 'typescript', 'javascriptreact',
-                    'typescriptreact', 'svelte', 'vue', 'tsx',
-                    'jsx', 'rescript',
-                    'xml',
-                    'php',
-                    'markdown',
-                    'glimmer', 'handlebars', 'hbs', 'astro',
-                },
-                skip_tags = { 'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'slot',
-                    'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr', 'menuitem' }
-            })
-        end,
-    },
-    -- {
-    --     "williamboman/mason.nvim",
-    --     config = function()
-    --         require("mason").setup()
-    --     end,
-    -- },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        config = function()
-            require("mason-lspconfig").setup({
-                ensure_installed = { "tailwindcss" },
-            })
-        end,
-    },
-    {
-        "glepnir/lspsaga.nvim",
-        branch = "main",
-        config = function()
-            require('lspsaga').setup({
-                rename = {
-                    whole_project = false
-                }
-            })
-        end,
-    },
-    {
-        "kdheepak/lazygit.nvim"
-    },
-    {
-        "zbirenbaum/copilot.lua",
-        event = { "VimEnter" },
-        config = function()
-            vim.defer_fn(function()
-                require("copilot").setup({
-                    panel = {
-                        enabled = false,
-                        auto_refresh = true,
-                        keymap = {
-                            jump_prev = "[[",
-                            jump_next = "]]",
-                            accept = "<CR>",
-                            refresh = "gr",
-                            open = "<M-l>"
-                        },
-                    },
-                    suggestion = {
-                        enabled = true,
-                        auto_trigger = false,
-                        debounce = 75,
-                        keymap = {
-                            accept = "<M-CR>",
-                            accept_word = false,
-                            accept_line = false,
-                            next = "<M-]>",
-                            prev = "<M-[>",
-                            dismiss = "<C-]>",
-                        },
-                    },
-                    copilot_node_command = 'node', -- Node.js version must be > 16.x
-                    server_opts_overrides = {
-                        inlineSuggestCount = 4
-                    },
-                })
-            end, 100)
-        end,
-    },
-    {
-        "zbirenbaum/copilot-cmp",
-        after = { "copilot.lua", "nvim-cmp" },
-        config = function()
-            require("copilot_cmp").setup()
-        end
-    },
-    {
-        "jackMort/ChatGPT.nvim",
-        config = function()
-            require("chatgpt").setup({})
-        end,
-        dependencies = {
-            "MunifTanjim/nui.nvim",
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim"
-        }
-    },
-    {
-        "nvim-treesitter/nvim-treesitter-refactor",
-        config = function()
-            require("nvim-treesitter.configs").setup({
-                refactor = {
-                    navigation = {
-                        enable = true,
-                        keymaps = {
-                            goto_next_usage = "<C-]>",
-                            goto_previous_usage = "<C-[>",
-                        },
-                    },
-                },
-            })
-        end,
-    },
-    -- {
-    --     "folke/zen-mode.nvim",
-    --     config = function()
-    --         require("zen-mode").setup {
-    --             window = {
-    --                 width = 0.59,
-    --             },
-    --             plugin = {
-    --                 gitsigns = true,
-    --                 kitty = {
-    --                     enabled = true
-    --                 }
-    --             }
-    --         }
-    --     end
-    -- },
-    {
-        "ThePrimeagen/harpoon"
-    },
-    {
-        "princejoogie/dir-telescope.nvim",
-        -- telescope.nvim is a required dependency
-        dependencies = { "nvim-telescope/telescope.nvim" },
-        config = function()
-            require("dir-telescope").setup({
-                -- these are the default options set
-                hidden = true,
-                no_ignore = false,
-                show_preview = true,
-            })
-        end,
-    }
-
-}
 
 -- make date format for blame relative
 vim.g.gitblame_date_format = '%r'
@@ -515,6 +336,16 @@ vim.api.nvim_create_autocmd("BufEnter", {
         -- console log and error
         vim.fn.setreg('l', 'yiwofmt.Printf("jkpa %+vjkla, jkp')
         vim.fn.setreg('k', "ojkccif err != nil {\njkccreturn nil, err\n}jk")
+    end,
+})
+
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = { "*.cpp", "*.c", "*.mm" },
+    callback = function()
+        -- console log and error
+        vim.fn.setreg('l', 'yiwoprintf("jkpa %djkla, jkpA;jk')
+        vim.fn.setreg('k', 'yiwoprintf("error - jkpa %djkla, jkpA;jk')
     end,
 })
 
