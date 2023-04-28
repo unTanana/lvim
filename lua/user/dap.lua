@@ -5,14 +5,24 @@ lvim.lsp.diagnostics.virtual_text = true
 lvim.builtin.treesitter.highlight.enable = true
 
 -- auto install treesitter parsers
-lvim.builtin.treesitter.ensure_installed = { "cpp", "c" }
+lvim.builtin.treesitter.ensure_installed = { "cpp", "c", "lua",
+    "rust",
+    "toml",
+}
+
+
+local formatters = require "lvim.lsp.null-ls.formatters"
+formatters.setup {
+    { command = "stylua", filetypes = { "lua" } },
+}
 
 -- Additional Plugins
 table.insert(lvim.plugins, {
     "p00f/clangd_extensions.nvim",
+    "simrat39/rust-tools.nvim",
 })
 
-vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "clangd" })
+vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "clangd", "rust_analyzer" })
 
 -- some settings can only passed as commandline flags, see `clangd --help`
 local clangd_flags = {
@@ -78,21 +88,80 @@ local opts = {
 
 require("lvim.lsp.manager").setup("clangd", opts)
 
+local mason_path = vim.fn.glob(vim.fn.stdpath "data" .. "/mason/")
+local codelldb_adapter = {
+    type = "server",
+    port = "${port}",
+    executable = {
+        command = mason_path .. "bin/codelldb",
+        args = { "--port", "${port}" },
+        -- On windows you may have to uncomment this:
+        -- detached = false,
+    },
+}
+
+pcall(function()
+    require("rust-tools").setup {
+        tools = {
+            executor = require("rust-tools/executors").termopen, -- can be quickfix or termopen
+            reload_workspace_from_cargo_toml = true,
+            runnables = {
+                use_telescope = true,
+            },
+            inlay_hints = {
+                auto = true,
+                only_current_line = false,
+                show_parameter_hints = false,
+                parameter_hints_prefix = "<-",
+                other_hints_prefix = "=>",
+                max_len_align = false,
+                max_len_align_padding = 1,
+                right_align = false,
+                right_align_padding = 7,
+                highlight = "Comment",
+            },
+            hover_actions = {
+                border = "rounded",
+            },
+            on_initialized = function()
+                vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter", "CursorHold", "InsertLeave" }, {
+                    pattern = { "*.rs" },
+                    callback = function()
+                        local _, _ = pcall(vim.lsp.codelens.refresh)
+                    end,
+                })
+            end,
+        },
+        dap = {
+            adapter = codelldb_adapter,
+        },
+        server = {
+            on_attach = function(client, bufnr)
+                require("lvim.lsp").common_on_attach(client, bufnr)
+                local rt = require "rust-tools"
+                vim.keymap.set("n", "K", rt.hover_actions.hover_actions, { buffer = bufnr })
+            end,
+
+            capabilities = require("lvim.lsp").common_capabilities(),
+            settings = {
+                ["rust-analyzer"] = {
+                    lens = {
+                        enable = true,
+                    },
+                    checkOnSave = {
+                        enable = true,
+                        command = "clippy",
+                    },
+                },
+            },
+        },
+    }
+end)
+
 -- install codelldb with :MasonInstall codelldb
 -- configure nvim-dap (codelldb)
 lvim.builtin.dap.on_config_done = function(dap)
-    dap.adapters.codelldb = {
-        type = "server",
-        port = "${port}",
-        executable = {
-            -- provide the absolute path for `codelldb` command if not using the one installed using `mason.nvim`
-            command = "codelldb",
-            args = { "--port", "${port}" },
-
-            -- On windows you may have to uncomment this:
-            -- detached = false,
-        },
-    }
+    dap.adapters.codelldb = codelldb_adapter
 
     dap.configurations.cpp = {
         {
@@ -112,24 +181,19 @@ lvim.builtin.dap.on_config_done = function(dap)
         },
     }
 
+    dap.configurations.c = dap.configurations.cpp
+    dap.configurations.objcpp = dap.configurations.cpp
 
-    dap.configurations.mm = {
+    dap.configurations.rust = {
         {
             name = "Launch file",
             type = "codelldb",
             request = "launch",
             program = function()
-                local path
-                vim.ui.input({ prompt = "Path to executable: ", default = vim.loop.cwd() .. "/build/" }, function(input)
-                    path = input
-                end)
-                vim.cmd [[redraw]]
-                return path
+                return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
             end,
             cwd = "${workspaceFolder}",
             stopOnEntry = false,
         },
     }
-
-    dap.configurations.c = dap.configurations.cpp
 end

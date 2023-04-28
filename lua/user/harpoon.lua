@@ -6,3 +6,5 @@ lvim.keys.normal_mode["<C-4>"] = function() require("harpoon.ui").nav_file(4) en
 lvim.keys.normal_mode["<S-l>"] = function() require("harpoon.ui").nav_next() end
 lvim.keys.normal_mode["<S-h>"] = function() require("harpoon.ui").nav_prev() end
 lvim.keys.normal_mode["<C-w>"] = "<C-^>"
+lvim.keys.normal_mode["<C-e>"] = require("harpoon.ui").toggle_quick_menu;
+lvim.builtin.which_key.mappings["w"] = { require("harpoon.mark").add_file, "Add File" }
