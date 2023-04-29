@@ -74,10 +74,11 @@ local function build_project_sh()
     end
 end
 
+
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = { "*.cpp", "*.c", "*.mm" },
     callback = function()
-        local opts = { noremap = true, silent = true, buffer = bufnr }
+        local opts = { noremap = true, silent = true }
         vim.keymap.set("n", "<leader>lb", build_project_sh, opts)
     end,
 })
@@ -89,7 +90,7 @@ end
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*.rs",
     callback = function()
-        local opts = { noremap = true, silent = true, buffer = bufnr }
+        local opts = { noremap = true, silent = true }
         vim.keymap.set("n", "<leader>lb", cargo_build, opts)
     end,
 })
