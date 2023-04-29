@@ -11,11 +11,6 @@ lvim.builtin.treesitter.ensure_installed = { "cpp", "c", "lua",
 }
 
 
-local formatters = require "lvim.lsp.null-ls.formatters"
-formatters.setup {
-    { command = "stylua", filetypes = { "lua" } },
-}
-
 -- Additional Plugins
 table.insert(lvim.plugins, {
     "p00f/clangd_extensions.nvim",

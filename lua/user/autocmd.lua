@@ -62,6 +62,39 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end,
 })
 
+
+-- function to find and execute build.sh in current project directory
+local function build_project_sh()
+    local build_script = vim.fn.findfile("build.sh", ".;")
+    if build_script ~= "" then
+        -- sh build.sh
+        vim.fn.system("sh " .. build_script)
+    else
+        print("build.sh not found")
+    end
+end
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = { "*.cpp", "*.c", "*.mm" },
+    callback = function()
+        local opts = { noremap = true, silent = true, buffer = bufnr }
+        vim.keymap.set("n", "<leader>lb", build_project_sh, opts)
+    end,
+})
+
+local function cargo_build()
+    vim.fn.system("cargo build")
+end
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "*.rs",
+    callback = function()
+        local opts = { noremap = true, silent = true, buffer = bufnr }
+        vim.keymap.set("n", "<leader>lb", cargo_build, opts)
+    end,
+})
+
+
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
 --   pattern = { "*.json", "*.jsonc" },
