@@ -76,19 +76,30 @@ local function build_project_sh()
 end
 
 
+local function run_project_sh()
+    local build_script = vim.fn.findfile("run.sh", ".;")
+    print(build_script)
+
+    if build_script ~= "" then
+        vim.cmd("!sh " .. build_script)
+    else
+        print("run.sh not found")
+    end
+end
+
+
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = { "*.cpp", "*.c", "*.mm" },
     callback = function()
-        local opts = { noremap = true, silent = false }
-        vim.keymap.set("n", "<leader>lb", build_project_sh, opts)
+        vim.keymap.set("n", "<leader>lb", build_project_sh, { noremap = true, silent = true })
+        vim.keymap.set("n", "<leader>lr", run_project_sh, { noremap = true, silent = true })
     end,
 })
 
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*.rs",
     callback = function()
-        local opts = { noremap = true, silent = false }
-        vim.keymap.set("n", "<leader>lb", "<cmd>!cargo build<CR>", opts)
+        vim.keymap.set("n", "<leader>lb", "<cmd>!cargo build<CR>", { noremap = true, silent = true })
     end,
 })
 
