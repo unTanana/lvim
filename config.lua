@@ -7,16 +7,46 @@ require("user.lsp")
 require("user.harpoon")
 require("user.autocmd")
 require("user.keymaps")
-
-lvim.icons.ui.Folder = ""
-lvim.icons.ui.FolderOpen = ""
-lvim.icons.ui.Watches = ""
-lvim.icons.ui.Close = ""
+require("user.icons")
 
 -- Terminal
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.terminal.active = true
+lvim.builtin.gitsigns.opts.signs = {
+    add = {
+        hl = "GitSignsAdd",
+        text = lvim.icons.ui.BoldLineLeft,
+        numhl = "GitSignsAddNr",
+        linehl = "GitSignsAddLn",
+    },
+    change = {
+        hl = "GitSignsChange",
+        text = lvim.icons.ui.BoldLineLeft,
+        numhl = "GitSignsChangeNr",
+        linehl = "GitSignsChangeLn",
+    },
+    delete = {
+        hl = "GitSignsDelete",
+        text = lvim.icons.ui.BoldLineLeft,
+        numhl = "GitSignsDeleteNr",
+        linehl = "GitSignsDeleteLn",
+    },
+    topdelete = {
+        hl = "GitSignsDelete",
+        text = lvim.icons.ui.BoldLineLeft,
+        numhl = "GitSignsDeleteNr",
+        linehl = "GitSignsDeleteLn",
+    },
+    changedelete = {
+        hl = "GitSignsChange",
+        text = lvim.icons.ui.BoldLineLeft,
+        numhl = "GitSignsChangeNr",
+        linehl = "GitSignsChangeLn",
+    },
+}
+
+
 -- lvim.builtin.terminal.execs = {
 --     { nil, "<C-`>",   "Horizontal Terminal", "horizontal", 0.4 },
 --     { nil, "<C-`>",   "Vertical Terminal", "vertical", 0.4 },
@@ -25,6 +55,7 @@ lvim.builtin.terminal.active = true
 
 -- make date format for blame relative
 vim.g.gitblame_date_format = '%r'
+
 
 
 -- copilot
