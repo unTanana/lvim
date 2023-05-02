@@ -8,6 +8,11 @@ require("user.harpoon")
 require("user.autocmd")
 require("user.keymaps")
 
+lvim.icons.ui.Folder = ""
+lvim.icons.ui.FolderOpen = ""
+lvim.icons.ui.Watches = ""
+lvim.icons.ui.Close = ""
+
 -- Terminal
 lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
