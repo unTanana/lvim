@@ -8,6 +8,10 @@ nvim_lsp.tailwindcss.setup {
 nvim_lsp.clangd.setup {
     filetypes = { "c", "cpp", "objc", "objcpp", "mm" },
 }
+
+-- nvim_lsp.jedi_language_server.setup {
+--     filetypes = { "python", "py" },
+-- }
 -- require("copilot").setup()
 
 -- astro file detection

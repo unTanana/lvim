@@ -1,6 +1,8 @@
 -- general
 lvim.builtin.bufferline.active = false
 lvim.builtin.indentlines.active = false
+-- disable dashboard
+lvim.builtin.alpha.active = false
 
 lvim.log.level = "warn"
 lvim.format_on_save = true
