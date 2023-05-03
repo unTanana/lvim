@@ -9,6 +9,5 @@ lvim.icons.ui.Triangle = "▲"
 lvim.icons.ui.FindText = ""
 lvim.icons.ui.FindFile = ""
 
-lvim.icons.diagnostics.Hint = ""
-
+lvim.icons.diagnostics.Hint = ""
 lvim.icons.misc.Robot = "󱜙"

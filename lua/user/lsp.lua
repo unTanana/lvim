@@ -20,3 +20,7 @@ vim.filetype.add({
         astro = "astro",
     }
 })
+
+-- vim.fn.sign_define("DiagnosticSignHint", { texthl = "DiagnosticSignHint", text = "", numhl = "DiagnosticSignHint" })
+-- nvim_lsp.diagnostics.signs.values.hint = { text = "", name = "DiagnosticSignHint" }
+-- nvim_lsp.setup()

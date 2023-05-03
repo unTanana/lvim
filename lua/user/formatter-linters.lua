@@ -29,7 +29,7 @@ linters.setup {
     {
         command = "cspell",
         ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
-        filetypes = { "javascript", "python", "typescript", "typescriptreact", "rust" },
+        filetypes = { "javascript", "python", "typescript", "typescriptreact", "rust", "c", "cpp", "mm" },
         diagnostics_postprocess = function(diagnostic)
             diagnostic.severity = vim.diagnostic.severity.HINT
         end,
