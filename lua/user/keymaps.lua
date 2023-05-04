@@ -43,6 +43,7 @@ end
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.insert_mode["<C-s>"] = "<ESC>:w<cr>a"
 lvim.keys.normal_mode["<C-p>"] = "<cmd>NvimTreeToggle<CR>"
 lvim.keys.visual_mode["<C-p>"] = "<cmd>NvimTreeToggle<CR>"
 lvim.keys.normal_mode["<S-CR>"] = "o<ESC>"
