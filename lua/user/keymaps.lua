@@ -43,6 +43,8 @@ end
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode["<C-p>"] = "<cmd>NvimTreeToggle<CR>"
+lvim.keys.visual_mode["<C-p>"] = "<cmd>NvimTreeToggle<CR>"
 lvim.keys.normal_mode["<S-CR>"] = "o<ESC>"
 lvim.keys.insert_mode["<S-CR>"] = "<ESC>o"
 lvim.keys.visual_mode["y"] = "ygv<ESC>" -- visual_mode yank -> moves cursor to end of yanked text and into normal mode
@@ -131,6 +133,10 @@ lvim.builtin.which_key.mappings["s"]["f"] = {
 
 lvim.builtin.which_key.mappings["s"]["s"] = {
     "<cmd>GrepInDirectory<CR>", "Find File"
+}
+
+lvim.builtin.which_key.mappings["s"]["w"] = {
+    "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Find Workspace Symbols"
 }
 
 lvim.builtin.which_key.mappings["F"] = {
