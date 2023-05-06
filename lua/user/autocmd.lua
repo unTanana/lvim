@@ -96,10 +96,26 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end,
 })
 
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "*.rs",
+    callback = function()
+        vim.keymap.set("n", "<leader>lr", "<cmd>!cargo run<CR>", { noremap = true, silent = false })
+    end,
+})
+
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*.rs",
     callback = function()
         vim.keymap.set("n", "<leader>lb", "<cmd>!cargo build<CR>", { noremap = true, silent = true })
+    end,
+})
+
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "*.ts",
+    callback = function()
+        vim.keymap.set("n", "<leader>lr", "<cmd>!ts-node %<CR>", { noremap = true, silent = false })
     end,
 })
 

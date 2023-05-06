@@ -33,11 +33,12 @@ lvim.builtin.gitsigns.opts.signs = {
 }
 
 
--- lvim.builtin.terminal.execs = {
---     { nil, "<C-`>",   "Horizontal Terminal", "horizontal", 0.4 },
---     { nil, "<C-`>",   "Vertical Terminal", "vertical", 0.4 },
---     { nil, [[<c-\>]], "Float Terminal",    "float",    nil },
--- }
+lvim.builtin.terminal.execs = {
+    -- { nil, "<C-`>",   "Horizontal Terminal", "horizontal", 0.4 },
+    -- { nil, "<C-`>",   "Vertical Terminal", "vertical", 0.4 },
+    -- { nil, [[<c-\>]], "Float Terminal", "float", nil },
+    { nil, [[<c-`>]], "Float Terminal", "float", nil },
+}
 
 -- make date format for blame relative
 vim.g.gitblame_date_format = '%r'
