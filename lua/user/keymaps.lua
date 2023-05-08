@@ -11,9 +11,13 @@ local function grep_git_files()
         sorting_strategy = "ascending",
         prompt_prefix = "  ",
         prompt_title = "Live Grep",
-        cwd = dir,
-        search_dirs = { get_current_git_directory() },
     }
+
+    -- only add git dirs if we are in a git repo
+    if string.match(dir, ":nogitrepository") == false then
+        opts.cwd = dir
+        opts.search_dirs = { dir }
+    end
 
     require("telescope.builtin").live_grep(opts)
 end
