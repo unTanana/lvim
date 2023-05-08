@@ -120,6 +120,14 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "*.ts",
+    callback = function()
+        vim.keymap.set("n", "<leader>lb", "<cmd>!npm run build <CR>", { noremap = true, silent = false })
+    end,
+})
+
+
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
 --   pattern = { "*.json", "*.jsonc" },
