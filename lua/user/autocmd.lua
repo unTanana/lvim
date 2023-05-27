@@ -6,12 +6,23 @@ local function set_cursor_colors()
     -- vim.opt.guicursor = "n-v-c:block-CursorNormal,i-ci-ve:ver100-CursorInsert,v:CursorVisual"
 end
 
---  disable auto comment && colors
+--  disable auto comment && colors + replace macro
 vim.api.nvim_create_autocmd("BufEnter", {
     callback = function()
         vim.opt.formatoptions = vim.opt.formatoptions - { "c", "r", "o" }
 
         set_cursor_colors()
+
+        vim.fn.setreg('r', '*Ncgn')
+    end,
+})
+
+
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = { "*.lua" },
+    callback = function()
+        -- console log
+        vim.fn.setreg('l', 'yiwoprint("jkpei, jkpea;jk')
     end,
 })
 
@@ -20,6 +31,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
     callback = function()
         -- console log and error
         vim.fn.setreg('l', 'yiwoconsole.log("jkpei, jkpea;jk')
+        vim.fn.setreg('o', 'yiwoconsole.debug("jkpei, jkpea;jk')
         vim.fn.setreg('k', 'yiwoconsole.error("jkpei, jkpea;jk')
     end,
 })
@@ -56,7 +68,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*.rs",
     callback = function()
-        -- console log and error
+        -- console log
         vim.fn.setreg('l', 'yiwoprintln!("{:?jkei, jkpA;jk')
         -- vim.fn.setreg('k', "") -- not used
     end,
@@ -124,6 +136,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*.ts",
     callback = function()
         vim.keymap.set("n", "<leader>lb", "<cmd>!npm run build <CR>", { noremap = true, silent = false })
+        vim.keymap.set("n", "<leader>lt", "<cmd>!npm run test % <CR>", { noremap = true, silent = false })
     end,
 })
 

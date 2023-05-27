@@ -4,19 +4,22 @@ end
 
 local function grep_git_files()
     -- remove newlines
-    local dir = get_current_git_directory()
+    local git_dir = get_current_git_directory()
+    local local_dir = vim.api.nvim_call_function('getcwd', {})
 
     local opts =
     {
         sorting_strategy = "ascending",
         prompt_prefix = "  ",
         prompt_title = "Live Grep",
+        cwd = local_dir,
+        search_dirs = { local_dir },
     }
 
     -- only add git dirs if we are in a git repo
-    if string.match(dir, ":nogitrepository") == false then
-        opts.cwd = dir
-        opts.search_dirs = { dir }
+    if string.match(git_dir, ":nogitrepository") == false then
+        opts.cwd = git_dir
+        opts.search_dirs = { git_dir }
     end
 
     require("telescope.builtin").live_grep(opts)
@@ -73,6 +76,8 @@ lvim.keys.normal_mode["<leader>o"] = ":Lspsaga outline<CR>"
 -- c* && c#
 lvim.keys.normal_mode["c*"] = "*Ncgn"
 lvim.keys.normal_mode["c#"] = "#NcgN"
+lvim.keys.visual_mode["<leader>*"] = "*Ncgn"
+lvim.keys.visual_mode["<leader>#"] = "#NcgN"
 lvim.keys.visual_mode["<leader>E"] = "<cmd>ChatGPTEditWithInstructions<cr>"
 
 -- unmap a default keymapping
@@ -106,6 +111,7 @@ lvim.builtin.which_key.mappings["c"] = {
     p = { "\"0p", "paste 0" },
     P = { "\"0P", "Paste 0" },
     l = { "@l", "console.log" },
+    D = { "@o", "console.debug" },
     e = { "@k", "console.error" },
     g = { "<cmd>!gitk %<CR>", "git file history" },
     o =
