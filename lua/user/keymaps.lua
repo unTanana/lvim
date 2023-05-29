@@ -51,8 +51,6 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.insert_mode["<C-s>"] = "<ESC>:w<cr>a"
-lvim.keys.normal_mode["<C-p>"] = "<cmd>NvimTreeToggle<CR>"
-lvim.keys.visual_mode["<C-p>"] = "<cmd>NvimTreeToggle<CR>"
 lvim.keys.normal_mode["<S-CR>"] = "o<ESC>"
 lvim.keys.insert_mode["<S-CR>"] = "<ESC>o"
 lvim.keys.visual_mode["y"] = "ygv<ESC>" -- visual_mode yank -> moves cursor to end of yanked text and into normal mode
@@ -62,6 +60,10 @@ lvim.keys.normal_mode["<C-d>"] = "<C-d>zz"
 lvim.keys.normal_mode["<C-u>"] = "<C-u>zz"
 lvim.keys.normal_mode["n"] = "nzz"
 lvim.keys.insert_mode["jk"] = "<ESC>"
+lvim.keys.normal_mode["YY"] = "va{Vygv<ESC>"
+lvim.keys.normal_mode["DD"] = "va{Vd"
+lvim.keys.normal_mode["<leader>DD"] = "va{V\"_d"
+
 -- delete before paste
 lvim.keys.visual_mode["<leader>p"] = "\"_dP"
 -- delete to _ registry
