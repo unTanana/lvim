@@ -61,7 +61,6 @@ lvim.keys.normal_mode["<C-u>"] = "<C-u>zz"
 lvim.keys.normal_mode["n"] = "nzz"
 lvim.keys.insert_mode["jk"] = "<ESC>"
 lvim.keys.normal_mode["YY"] = "va{Vygv<ESC>"
-lvim.keys.normal_mode["DD"] = "va{Vd"
 lvim.keys.normal_mode["<leader>DD"] = "va{V\"_d"
 
 -- delete before paste

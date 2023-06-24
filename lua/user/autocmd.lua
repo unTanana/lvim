@@ -133,6 +133,14 @@ vim.api.nvim_create_autocmd("BufEnter", {
 
 
 vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "*.go",
+    callback = function()
+        vim.keymap.set("n", "<leader>lr", "<cmd>!go run %<CR>", { noremap = true, silent = false })
+    end,
+})
+
+
+vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*.ts",
     callback = function()
         vim.keymap.set("n", "<leader>lb", "<cmd>!npm run build <CR>", { noremap = true, silent = false })

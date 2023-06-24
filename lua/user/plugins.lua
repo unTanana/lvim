@@ -168,6 +168,5 @@ lvim.plugins = {
                 show_preview = true,
             })
         end,
-    }
-
+    },
 }
