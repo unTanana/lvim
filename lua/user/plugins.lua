@@ -169,4 +169,7 @@ lvim.plugins = {
             })
         end,
     },
+    {
+        "knubie/vim-kitty-navigator"
+    }
 }

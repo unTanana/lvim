@@ -1,5 +1,5 @@
 -- DAP
-lvim.keys.normal_mode["<leader>D"] = function() require("dapui").toggle() end
+lvim.keys.normal_mode["<leader>lD"] = function() require("dapui").toggle() end
 
 lvim.lsp.diagnostics.virtual_text = true
 lvim.builtin.treesitter.highlight.enable = true
