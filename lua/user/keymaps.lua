@@ -119,7 +119,7 @@ lvim.builtin.which_key.mappings["c"] = {
     { organize_imports, "Organize Imports" },
     r = { "<cmd>Lspsaga rename<CR>", "Rename" },
     d = { "<cmd>Lspsaga peek_definition<CR>", "Peek Definition" },
-    f = { "<cmd>Lspsaga lsp_finder<CR>", "LSP Finder" },
+    f = { "<cmd>Lspsaga finder<CR>", "LSP Finder" },
     a = { "<cmd>Lspsaga code_action<CR>", "Code Action" },
     t = { "<cmd>Lspsaga goto_type_definition<CR>", "Go To Type Definition" },
 }

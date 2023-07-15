@@ -149,6 +149,18 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 
+vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "*.json",
+    callback = function()
+
+        -- vim.keymap.set("n", "<leader>lF",
+        --     "<cmd>LvimToggleFormatOnSave<CR><cmd>%!jq --tab<CR><cmd>w!<CR><cmd>LvimToggleFormatOnSave<CR>",
+        --     { noremap = true, silent = true })
+        vim.keymap.set("n", "<leader>lF", "<cmd>%!jq --tab<CR><cmd>w!<CR>", { noremap = true, silent = true })
+    end,
+})
+
+
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
 --   pattern = { "*.json", "*.jsonc" },
