@@ -57,7 +57,34 @@ lvim.plugins = {
         config = function()
             require('lspsaga').setup({
                 rename = {
-                    whole_project = false
+                    in_select = false,
+                    auto_save = false,
+                    project_max_width = 0.5,
+                    project_max_height = 0.5,
+                    keys = {
+                        quit = '<C-c>',
+                        exec = '<CR>',
+                        select = 'x',
+                    },
+                },
+                symbol_in_winbar = {
+                    enable = false,
+                },
+                scroll_preview = {
+                    scroll_down = '<C-d>',
+                    scroll_up = '<C-u>',
+                },
+                finder = {
+                    keys = {
+                        shuttle = '[w',
+                        toggle_or_open = { '<CR>', 'o', 'l' },
+                        vsplit = 'v',
+                        split = 's',
+                        tabe = 't',
+                        tabnew = 'r',
+                        quit = 'q',
+                        close = '<C-c>k',
+                    },
                 }
             })
         end,
@@ -71,30 +98,8 @@ lvim.plugins = {
         config = function()
             vim.defer_fn(function()
                 require("copilot").setup({
-                    panel = {
-                        enabled = false,
-                        auto_refresh = true,
-                        keymap = {
-                            jump_prev = "[[",
-                            jump_next = "]]",
-                            accept = "<CR>",
-                            refresh = "gr",
-                            open = "<M-l>"
-                        },
-                    },
-                    suggestion = {
-                        enabled = true,
-                        auto_trigger = false,
-                        debounce = 75,
-                        keymap = {
-                            accept = "<M-CR>",
-                            accept_word = false,
-                            accept_line = false,
-                            next = "<M-]>",
-                            prev = "<M-[>",
-                            dismiss = "<C-]>",
-                        },
-                    },
+                    suggestion = { enabled = false },
+                    panel = { enabled = false },
                     copilot_node_command = 'node', -- Node.js version must be > 16.x
                     server_opts_overrides = {
                         inlineSuggestCount = 4

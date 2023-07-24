@@ -133,6 +133,14 @@ vim.api.nvim_create_autocmd("BufEnter", {
 
 
 vim.api.nvim_create_autocmd("BufEnter", {
+    pattern = "*.js",
+    callback = function()
+        vim.keymap.set("n", "<leader>lr", "<cmd>!node %<CR>", { noremap = true, silent = false })
+    end,
+})
+
+
+vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*.go",
     callback = function()
         vim.keymap.set("n", "<leader>lr", "<cmd>!go run %<CR>", { noremap = true, silent = false })
@@ -152,7 +160,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
 vim.api.nvim_create_autocmd("BufEnter", {
     pattern = "*.json",
     callback = function()
-
         -- vim.keymap.set("n", "<leader>lF",
         --     "<cmd>LvimToggleFormatOnSave<CR><cmd>%!jq --tab<CR><cmd>w!<CR><cmd>LvimToggleFormatOnSave<CR>",
         --     { noremap = true, silent = true })
